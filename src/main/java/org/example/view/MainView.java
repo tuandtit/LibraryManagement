@@ -45,6 +45,7 @@ public class MainView {
         System.out.println("Select the data storage you want to use:");
         System.out.println("1. Database");
         System.out.println("2. File");
+        System.out.println("3. Exit");
         System.out.print("Enter your choice: ");
     }
 
@@ -61,7 +62,7 @@ public class MainView {
             return getDataStorageChoice();
         }
 
-        if (choice < 1 || choice > 2) {
+        if (choice < 1 || choice > 3) {
             System.out.println("Invalid choice. Please enter 1 for Database, 2 for File.");
             return getDataStorageChoice();
         }
@@ -70,29 +71,33 @@ public class MainView {
     }
 
     public void run() {
-        int dataStorageChoice = getDataStorageChoice();
-        UserController userController = new UserController(dataStorageChoice);
-        CategoryController categoryController = new CategoryController(dataStorageChoice);
-        BookController bookController = new BookController(dataStorageChoice);
-        BorrowController borrowController = new BorrowController(dataStorageChoice);
+        while (true) {
+            switch (getDataStorageChoice()) {
+                case 1 -> manageLibrary(1);
+                case 2 -> manageLibrary(2);
+                default -> {
+                    System.out.println("Exit!");
+                    return;
+                }
+            }
+        }
+    }
 
+    private void manageLibrary(int choice) {
+        UserController userController = new UserController(choice);
+        CategoryController categoryController = new CategoryController(choice);
+        BookController bookController = new BookController(choice);
+        BorrowController borrowController = new BorrowController(choice);
         while (true) {
             switch (getMenuManage()) {
-                case 1:
-                    manageUser(userController);
-                    break;
-                case 2:
-                    manageCategory(categoryController);
-                    break;
-                case 3:
-                    manageBook(bookController);
-                    break;
-                case 4:
-                    manageBorrowBook(borrowController);
-                    break;
-                case 5:
-                    System.out.println("Exit");
+                case 1 -> manageUser(userController);
+                case 2 -> manageCategory(categoryController);
+                case 3 -> manageBook(bookController);
+                case 4 -> manageBorrowBook(borrowController);
+                default -> {
+                    System.out.println("Back");
                     return;
+                }
             }
         }
     }
@@ -103,21 +108,14 @@ public class MainView {
             choice = getBorrowMenu();
             try {
                 switch (choice) {
-                    case 1:
-                        borrowController.borrowBook();
-                        break;
-                    case 2:
-                        borrowController.returnBook();
-                        break;
-                    case 3:
-                        borrowController.getBorrowedBooksByUser();
-                        break;
-                    case 4:
-                        borrowController.getAllBorrowedBooks();
-                        break;
-                    case 5:
+                    case 1 -> borrowController.borrowBook();
+                    case 2 -> borrowController.returnBook();
+                    case 3 -> borrowController.getBorrowedBooksByUser();
+                    case 4 -> borrowController.getAllBorrowedBooks();
+                    default -> {
                         System.out.println("Back to home!");
                         return;
+                    }
                 }
             } catch (IllegalArgumentException ex) {
                 System.out.println("Error: " + ex.getMessage());
@@ -162,24 +160,15 @@ public class MainView {
             choice = getBookMenu();
             try {
                 switch (choice) {
-                    case 1:
-                        bookController.addBook();
-                        break;
-                    case 2:
-                        bookController.searchBookByTitle();
-                        break;
-                    case 3:
-                        bookController.updateBookById();
-                        break;
-                    case 4:
-                        bookController.deleteBookById();
-                        break;
-                    case 5:
-                        bookController.showAllBooks();
-                        break;
-                    case 6:
+                    case 1 -> bookController.addBook();
+                    case 2 -> bookController.searchBookByTitle();
+                    case 3 -> bookController.updateBookById();
+                    case 4 -> bookController.deleteBookById();
+                    case 5 -> bookController.showAllBooks();
+                    default -> {
                         System.out.println("Back to home!");
                         return;
+                    }
                 }
             } catch (IllegalArgumentException ex) {
                 System.out.println("Error: " + ex.getMessage());
@@ -226,24 +215,15 @@ public class MainView {
             choice = getCategoryMenu();
             try {
                 switch (choice) {
-                    case 1:
-                        categoryController.addCategory();
-                        break;
-                    case 2:
-                        categoryController.searchCategoryById();
-                        break;
-                    case 3:
-                        categoryController.updateCategoryById();
-                        break;
-                    case 4:
-                        categoryController.deleteCategoryById();
-                        break;
-                    case 5:
-                        categoryController.showAllCategories();
-                        break;
-                    case 6:
+                    case 1 -> categoryController.addCategory();
+                    case 2 -> categoryController.searchCategoryById();
+                    case 3 -> categoryController.updateCategoryById();
+                    case 4 -> categoryController.deleteCategoryById();
+                    case 5 -> categoryController.showAllCategories();
+                    default -> {
                         System.out.println("Back to home!");
                         return;
+                    }
                 }
             } catch (IllegalArgumentException ex) {
                 System.out.println("Error: " + ex.getMessage());
@@ -289,24 +269,15 @@ public class MainView {
             choice = getUserMenu();
             try {
                 switch (choice) {
-                    case 1:
-                        userController.addUser();
-                        break;
-                    case 2:
-                        userController.searchUserByName();
-                        break;
-                    case 3:
-                        userController.updateUser();
-                        break;
-                    case 4:
-                        userController.deleteUser();
-                        break;
-                    case 5:
-                        userController.showAllUser();
-                        break;
-                    case 6:
+                    case 1 -> userController.addUser();
+                    case 2 -> userController.searchUserByName();
+                    case 3 -> userController.updateUser();
+                    case 4 -> userController.deleteUser();
+                    case 5 -> userController.showAllUser();
+                    default -> {
                         System.out.println("Back to home!");
                         return;
+                    }
                 }
             } catch (IllegalArgumentException ex) {
                 System.out.println("Error: " + ex.getMessage());
@@ -341,7 +312,7 @@ public class MainView {
         System.out.println("2. Manage Category");
         System.out.println("3. Manage Book");
         System.out.println("4. Manage Borrow Book");
-        System.out.println("5. Exit");
+        System.out.println("5. Back");
         System.out.print("Enter your choice: ");
     }
 }
